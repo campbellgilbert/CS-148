@@ -13,25 +13,37 @@ class Layer:
 
     def softmax(self, inputs):
         # TODO: YOUR CODE HERE # (Part 2)
-        return None
+        #apply softmax to the final output
+        #normalize vector of real numbers into probability distribution
+        #first we have vector of all elements as an exponent of e
+        exps = np.exp(inputs)
+        sum = np.sum(exps)
+        ret = np.ndarray(i / sum for i in exps)
+        #CHECK THIS to make sure the idea works
+        print(ret)
+        #check again -- do all the probabilities add up to 1?
+        print(np.sum(ret))
+        return np.ndarray(ret)
         # END OF YOUR CODE #
 
     def sigmoid(self, inputs):
         # TODO: YOUR CODE HERE # (Part 2)
-        return None
+        #the sigmoid function is 1/(1+e^-x)
+        return 1 / (1 + np.exp(-input))
         # END OF YOUR CODE #
 
     def sigmoid_derivative(self, Z):
         # TODO: YOUR CODE HERE # (Part 2)
-        return None
+        
+        return -np.exp(Z) / (1+np.exp(Z))**2
         # END OF YOUR CODE #
-
+    
     def tanH(self, inputs):
         return np.tanh(inputs)
 
     def tanH_derivative(self, Z):
         # TODO: YOUR CODE HERE # (Part 5)
-        return None
+        return 1 - np.tanh(Z)**2
         # END OF YOUR CODE #
 
     def relu(self, inputs):
@@ -45,8 +57,9 @@ class Layer:
         # END OF YOUR CODE #
 
     # TODO: YOUR CODE HERE #
-    def apply_chain_rule_activation_derivative(self, q, activation_derivative):
+    def apply_chain_rule_activation_derivative(self, z, activation_derivative):
         # rename the variable q appropriately -- what should this be?
+        #q should be z
         # then, apply the chain rule and return the result
         return None
 
@@ -54,7 +67,24 @@ class Layer:
 
     def forward(self, inputs, weights, bias, activation):
         # TODO: YOUR CODE HERE #
-        Z_curr = None  # compute Z_curr from weights and bias
+        #arrays/matrices: inputs, weights
+        #scalars: bias, activation
+
+        #z_j = sum_i(w_ij * a_i) * b_j
+        """
+        for output z in layer l, 
+        i goes from 1 to m^l (the size of the layer)
+        z = the sum of (all weights in the same row to this point 
+            * all of the activations to this point) * current bias
+        for each 
+        """
+        
+        Z_curr = 0
+        for i in range(len(weights)):
+            #wij*ai
+            Z_curr += weights[i] * activation[i] 
+        Z_curr += bias
+          # compute Z_curr from weights and bias
         # END OF YOUR CODE #
 
         if activation == "relu":
